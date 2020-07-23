@@ -1,3 +1,5 @@
 name: ServerPoint
 version: ${project.version}
 main: mc.mec.serverpoint.ServerPoint
+commands:
+  spoint:

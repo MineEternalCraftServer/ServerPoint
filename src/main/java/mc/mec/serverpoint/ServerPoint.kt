@@ -25,6 +25,7 @@ class ServerPoint : JavaPlugin() {
         //  DB
         dataBase = DataBase("ServerPoint")
 
+        getCommand("spoint")?.executor = Command
     }
 
     override fun onDisable() {
