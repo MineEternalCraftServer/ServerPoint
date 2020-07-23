@@ -5,6 +5,6 @@ package mc.mec.serverpoint
  * @author testusuke
  */
 object Permission {
-    const val GENERAL = "serverpoint.general"
-    const val ADMIN = "serverpoint.admin"
+    const val GENERAL = "spoint.general"
+    const val ADMIN = "spoint.admin"
 }
