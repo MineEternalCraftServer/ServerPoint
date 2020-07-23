@@ -34,12 +34,27 @@ object Command : CommandExecutor {
                 }
                 "help" -> {
                     // command: /spoint help
+                    sendHelp(p)
                 }
+
+                else -> sendHelp(p)
             }
 
         }else {
             p.sendMessage("§cThis command can be executed by Admin or higher.")
         }
         return true
+    }
+
+    private fun sendHelp(player:Player){
+        val msg = """
+            §e§l===================================
+            §6/spoint <-
+            §6/spoint add <player> <amount> <- ポイントを付与します。
+            §6/spoint remove <player> <amount> <- ポイントを剥奪します。
+            §6/spoint help <- ヘルプの表示
+            §e§l===================================
+        """.trimIndent()
+        player.sendMessage(msg)
     }
 }
