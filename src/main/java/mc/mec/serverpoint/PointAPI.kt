@@ -1,5 +1,8 @@
 package mc.mec.serverpoint
 
+import mc.mec.serverpoint.ServerPoint.Companion.dataBase
+import mc.mec.serverpoint.ServerPoint.Companion.plugin
+import java.sql.SQLException
 import java.util.*
 
 /**
@@ -18,8 +21,7 @@ object PointAPI {
      * @return success[Boolean] success
      */
     fun createPlayer(uuid: String):Boolean{
-
-
+        
         return true
     }
 
@@ -69,4 +71,42 @@ object PointAPI {
         return amount
     }
 
+    /**
+     * function of create table
+     * @return success[Boolean]
+     */
+    fun createTable():Boolean {
+        val sql = "create table server_point\n" +
+                "(\n" +
+                "\tid int auto_increment,\n" +
+                "\tuuid VARCHAR(36) not null,\n" +
+                "\tpoint int default 0 null,\n" +
+                "\tdate datetime not null,\n" +
+                "\tconstraint server_point_pk\n" +
+                "\t\tprimary key (id)\n" +
+                ");\n" +
+                "\n" +
+                "create index server_point_uuid_index\n" +
+                "\ton server_point (uuid);"
+        try {
+            //  DB
+            val connection = dataBase.getConnection()
+            if (connection == null) {
+                dataBase.sendErrorMessage()
+                plugin.logger.info("Can not access DB. method:PointAPI/createTable")
+                return false
+            }
+            val statement = connection.createStatement()
+            statement.execute(sql)
+            statement.close()
+            connection.close()
+            //  Logger
+            plugin.logger.info("created table.")
+        }catch (e:SQLException){
+            e.printStackTrace()
+            plugin.logger.info("Can not create table.")
+            return false
+        }
+        return true
+    }
 }

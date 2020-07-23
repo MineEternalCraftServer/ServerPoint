@@ -21,8 +21,13 @@ class ServerPoint : JavaPlugin() {
         logger.info("Enabled ServerPoint ver-$version")
         //  instance
         plugin = this
+        //  Config
+        this.saveDefaultConfig()
         //  DB
         dataBase = DataBase("ServerPoint")
+        //  Create Table
+        PointAPI.createTable()
+
         //  Command
         getCommand("spoint")?.executor = Command
     }
