@@ -19,17 +19,20 @@ object Command : CommandExecutor {
         if (p.hasPermission("spoint.admin")) {
 
             if (cmd == "add") {
+                // command: /spoint add <player> <amount>
 
             }
 
             if (cmd == "remove") {
+                // command: /spoint remove <player> <amount>
 
             }
 
             if (cmd == "help") {
+                // command: /spoint help
 
             }
-            
+
         }else {
             p.sendMessage("§cThis command can be executed by Admin or higher.")
         }
