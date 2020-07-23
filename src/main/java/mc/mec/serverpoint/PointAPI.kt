@@ -264,6 +264,19 @@ object PointAPI {
                 "\n" +
                 "create index server_point_uuid_index\n" +
                 "\ton server_point (uuid);"
+        val sql_log = "create table server_point_log\n" +
+                "(\n" +
+                "\tid int auto_increment,\n" +
+                "\tuuid VARCHAR(36) not null,\n" +
+                "\taction VARCHAR(50) not null,\n" +
+                "\tpoint int not null,\n" +
+                "\tdate datetime not null,\n" +
+                "\tconstraint server_point_log_pk\n" +
+                "\t\tprimary key (id)\n" +
+                ");\n" +
+                "\n" +
+                "create index server_point_log_uuid_index\n" +
+                "\ton server_point_log (uuid);\n"
         try {
             //  DB
             val connection = dataBase.getConnection()
@@ -274,6 +287,7 @@ object PointAPI {
             }
             val statement = connection.createStatement()
             statement.execute(sql)
+            statement.execute(sql_log)
             statement.close()
             connection.close()
             //  Logger
@@ -301,16 +315,16 @@ object PointAPI {
             override fun run() {
                 val sql = when(info.action){
                     Action.CREATE -> {
-                        "INSERT INTO server_point (uuid,action,point,date) VALUES ('${info.uuid}','CREATE','-1','${info.date}');"
+                        "INSERT INTO server_point_log (uuid,action,point,date) VALUES ('${info.uuid}','CREATE','-1','${info.date}');"
                     }
                     Action.DELETE -> {
-                        "INSERT INTO server_point (uuid,action,point,date) VALUES ('${info.uuid}','DELETE','-1','${info.date}');"
+                        "INSERT INTO server_point_log (uuid,action,point,date) VALUES ('${info.uuid}','DELETE','-1','${info.date}');"
                     }
                     Action.ADD -> {
-                        "INSERT INTO server_point (uuid,action,point,date) VALUES ('${info.uuid}','ADD','${info.point}','${info.date}');"
+                        "INSERT INTO server_point_log (uuid,action,point,date) VALUES ('${info.uuid}','ADD','${info.point}','${info.date}');"
                     }
                     Action.REMOVE -> {
-                        "INSERT INTO server_point (uuid,action,point,date) VALUES ('${info.uuid}','REMOVE','${info.point}','${info.date}');"
+                        "INSERT INTO server_point_log (uuid,action,point,date) VALUES ('${info.uuid}','REMOVE','${info.point}','${info.date}');"
                     }
                 }
                 try {
