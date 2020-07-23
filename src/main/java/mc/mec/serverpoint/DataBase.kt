@@ -72,6 +72,7 @@ class DataBase(private val prefix: String) {
         plugin.logger.info("接続に成功しました！")
         return true
     }
+
     fun sendErrorMessage() {
         plugin.logger.warning("接続エラーです。データベースがダウンしている、もしくはコネクションの設定を確認してください。")
         if (errorMode) return

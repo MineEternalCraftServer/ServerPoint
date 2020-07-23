@@ -12,21 +12,21 @@ import org.bukkit.scheduler.BukkitRunnable
 
 object Command : CommandExecutor {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
-        if (sender is ConsoleCommandSender){
+        if (sender is ConsoleCommandSender) {
             sender.sendMessage("This command can only be executed by the player.")
             return false
         }
 
         val p = sender as Player
 
-        if(args.isEmpty()){
+        if (args.isEmpty()) {
             //  permission
-            if(!p.hasPermission(Permission.GENERAL)){
+            if (!p.hasPermission(Permission.GENERAL)) {
                 p.sendMessage("${prefix}§c権限がありません。You do not have permission.")
                 return false
             }
             //  getPoint
-            object : BukkitRunnable(){
+            object : BukkitRunnable() {
                 override fun run() {
                     val point = PointAPI.getPoint(p.uniqueId.toString())
                     p.sendMessage("${prefix}§aあなたのポイント: $point")
@@ -35,32 +35,32 @@ object Command : CommandExecutor {
             return true
         }
         if (p.hasPermission(Permission.ADMIN)) {
-            when(args[0]){
+            when (args[0]) {
                 "add" -> {
                     // command: /spoint add <player> <amount>
-                    if(args.size < 2){
+                    if (args.size < 2) {
                         p.sendMessage("${prefix}§cプレイヤーを指定してください。")
                         return false
                     }
                     val mcid = args[1]
                     val player = Bukkit.getPlayer(mcid) ?: Bukkit.getOfflinePlayer(mcid)
                     val uuid = player.uniqueId.toString()
-                    if(args.size < 3){
+                    if (args.size < 3) {
                         p.sendMessage("${prefix}§cポイントを入力してください。")
                         return false
                     }
                     val arg2 = args[2]
                     val point = arg2.toIntOrNull()
-                    if(point == null){
+                    if (point == null) {
                         p.sendMessage("${prefix}§cポイントを半角数字で入力してください。")
                         return false
                     }
                     //  Execute
-                    object : BukkitRunnable(){
+                    object : BukkitRunnable() {
                         override fun run() {
-                            if(PointAPI.addPoint(uuid,point)) {
+                            if (PointAPI.addPoint(uuid, point)) {
                                 p.sendMessage("${prefix}§aポイントを追加しました。")
-                            }else{
+                            } else {
                                 p.sendMessage("${prefix}§cエラーが発生したため、ポイントを追加できませんでした。")
                             }
                         }
@@ -68,29 +68,29 @@ object Command : CommandExecutor {
                 }
                 "remove" -> {
                     // command: /spoint remove <player> <amount>
-                    if(args.size < 2){
+                    if (args.size < 2) {
                         p.sendMessage("${prefix}§cプレイヤーを指定してください。")
                         return false
                     }
                     val mcid = args[1]
                     val player = Bukkit.getPlayer(mcid) ?: Bukkit.getOfflinePlayer(mcid)
                     val uuid = player.uniqueId.toString()
-                    if(args.size < 3){
+                    if (args.size < 3) {
                         p.sendMessage("${prefix}§cポイントを入力してください。")
                         return false
                     }
                     val arg2 = args[2]
                     val point = arg2.toIntOrNull()
-                    if(point == null){
+                    if (point == null) {
                         p.sendMessage("${prefix}§cポイントを半角数字で入力してください。")
                         return false
                     }
                     //  Execute
-                    object : BukkitRunnable(){
+                    object : BukkitRunnable() {
                         override fun run() {
-                            if(PointAPI.removePoint(uuid,point)) {
+                            if (PointAPI.removePoint(uuid, point)) {
                                 p.sendMessage("${prefix}§aポイントを剥奪しました。")
-                            }else{
+                            } else {
                                 p.sendMessage("${prefix}§cエラーが発生したため、ポイントを剥奪できませんでした。")
                             }
                         }
@@ -98,7 +98,7 @@ object Command : CommandExecutor {
                 }
                 "delete" -> {
                     //  command: /spoint delete <player>
-                    if(args.size < 2){
+                    if (args.size < 2) {
                         p.sendMessage("${prefix}§cプレイヤーを指定してください。")
                         return false
                     }
@@ -106,11 +106,11 @@ object Command : CommandExecutor {
                     val player = Bukkit.getPlayer(mcid) ?: Bukkit.getOfflinePlayer(mcid)
                     val uuid = player.uniqueId.toString()
                     //  Execute
-                    object : BukkitRunnable(){
+                    object : BukkitRunnable() {
                         override fun run() {
-                            if(PointAPI.deletePlayer(uuid)) {
+                            if (PointAPI.deletePlayer(uuid)) {
                                 p.sendMessage("${prefix}§aプレイヤーデータを削除しました。")
-                            }else{
+                            } else {
                                 p.sendMessage("${prefix}§cエラーが発生したため、プレイヤーデータを削除できませんでした。")
                             }
                         }
@@ -122,7 +122,7 @@ object Command : CommandExecutor {
                 }
                 "show" -> {
                     //  command:/spoint show <player>
-                    if(args.size < 2){
+                    if (args.size < 2) {
                         p.sendMessage("${prefix}§cプレイヤーを指定してください。")
                         return false
                     }
@@ -130,7 +130,7 @@ object Command : CommandExecutor {
                     val player = Bukkit.getPlayer(mcid) ?: Bukkit.getOfflinePlayer(mcid)
                     val uuid = player.uniqueId.toString()
                     //  Execute
-                    object : BukkitRunnable(){
+                    object : BukkitRunnable() {
                         override fun run() {
                             p.sendMessage("§a${player.name}のポイント: ${PointAPI.getPoint(uuid)}")
                         }
@@ -139,13 +139,13 @@ object Command : CommandExecutor {
                 else -> sendHelp(p)
             }
 
-        }else {
+        } else {
             p.sendMessage("§cThis command can be executed by Admin or higher.")
         }
         return true
     }
 
-    private fun sendHelp(player:Player){
+    private fun sendHelp(player: Player) {
         val msg = """
             §e§l===================================
             §6/spoint <- ポイントを確認します。

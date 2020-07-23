@@ -25,7 +25,7 @@ object PointAPI {
      * @param uuid[String]　UUID
      * @return success[Boolean] success
      */
-    fun createPlayer(uuid: String):Boolean{
+    fun createPlayer(uuid: String): Boolean {
         val sql = "INSERT INTO server_point (uuid,point,date) VALUES ('${uuid}','0','${getDate()}');"
         try {
             //  DB
@@ -40,7 +40,7 @@ object PointAPI {
             //  check exist
             val selectSQL = "SELECT point FROM server_point WHERE uuid='${uuid}' LIMIT 1;"
             val result = statement.executeQuery(selectSQL)
-            if(result.next()){
+            if (result.next()) {
                 statement.close()
                 connection.close()
                 return true
@@ -51,10 +51,10 @@ object PointAPI {
             connection.close()
 
             //  Log
-            addLog(LogInfo(uuid,Action.DELETE,-1, getDate()))
+            addLog(LogInfo(uuid, Action.DELETE, -1, getDate()))
             //  Logger
             plugin.logger.info("created player. uuid:$uuid")
-        }catch (e:SQLException){
+        } catch (e: SQLException) {
             e.printStackTrace()
             plugin.logger.info("Can not create player.")
             return false
@@ -67,7 +67,7 @@ object PointAPI {
      * @param uuid[String]　UUID
      * @return success[Boolean] success
      */
-    fun deletePlayer(uuid: String):Boolean{
+    fun deletePlayer(uuid: String): Boolean {
         val sql = "DELETE FROM server_point WHERE uuid='${uuid}';"
         try {
             //  DB
@@ -83,10 +83,10 @@ object PointAPI {
             connection.close()
 
             //  Log
-            addLog(LogInfo(uuid,Action.DELETE,-1, getDate()))
+            addLog(LogInfo(uuid, Action.DELETE, -1, getDate()))
             //  Logger
             plugin.logger.info("deleted player. uuid:$uuid")
-        }catch (e:SQLException){
+        } catch (e: SQLException) {
             e.printStackTrace()
             plugin.logger.info("Can not delete player.")
             return false
@@ -100,7 +100,7 @@ object PointAPI {
      * @param amount[Int] point amount
      * @return success[Boolean] success
      */
-    fun addPoint(uuid:String,amount:Int):Boolean{
+    fun addPoint(uuid: String, amount: Int): Boolean {
         //  Select
         val selectSQL = "SELECT point,date FROM server_point WHERE uuid='${uuid}' LIMIT 1;"
         //  UPDATE
@@ -116,13 +116,13 @@ object PointAPI {
             }
             val statement = connection.createStatement()
             val result = statement.executeQuery(selectSQL)
-            var point:Int = if(!result.next()){
+            var point: Int = if (!result.next()) {
                 //  Create Player Data
                 createPlayer(uuid)
                 0
-            }else{
+            } else {
                 var p = 0
-                while (result.next()){
+                while (result.next()) {
                     p = result.getInt("point")
                 }
                 p
@@ -133,8 +133,8 @@ object PointAPI {
             //  add point
             point += amount
             //  replace
-            updateSQL.replace("_POINT_",point.toString())
-            updateSQL.replace("_DATE_",getDate())
+            updateSQL.replace("_POINT_", point.toString())
+            updateSQL.replace("_DATE_", getDate())
             //  Execute
             statement.executeUpdate(updateSQL)
 
@@ -143,10 +143,10 @@ object PointAPI {
             connection.close()
 
             //  Log
-            addLog(LogInfo(uuid,Action.ADD,amount, getDate()))
+            addLog(LogInfo(uuid, Action.ADD, amount, getDate()))
             //  Logger
             plugin.logger.info("added point. uuid:$uuid added: $amount")
-        }catch (e:SQLException){
+        } catch (e: SQLException) {
             e.printStackTrace()
             plugin.logger.info("Can not add point.")
             return false
@@ -160,7 +160,7 @@ object PointAPI {
      * @param amount[Int] point amount
      * @return success[Boolean] success
      */
-    fun removePoint(uuid:String,amount:Int):Boolean{
+    fun removePoint(uuid: String, amount: Int): Boolean {
         //  Select
         val selectSQL = "SELECT point,date FROM server_point WHERE uuid='${uuid}' LIMIT 1;"
         //  UPDATE
@@ -176,13 +176,13 @@ object PointAPI {
             }
             val statement = connection.createStatement()
             val result = statement.executeQuery(selectSQL)
-            var point:Int = if(!result.next()){
+            var point: Int = if (!result.next()) {
                 //  Create Player Data
                 createPlayer(uuid)
                 0
-            }else{
+            } else {
                 var p = 0
-                while (result.next()){
+                while (result.next()) {
                     p = result.getInt("point")
                 }
                 p
@@ -193,7 +193,7 @@ object PointAPI {
             //  add point
             point -= amount
             //  replace
-            updateSQL.replace("_POINT_",point.toString())
+            updateSQL.replace("_POINT_", point.toString())
             updateSQL.replace("_DATE_", getDate())
             //  Execute
             statement.executeUpdate(updateSQL)
@@ -202,10 +202,10 @@ object PointAPI {
             connection.close()
 
             //  Log
-            addLog(LogInfo(uuid,Action.REMOVE,amount, getDate()))
+            addLog(LogInfo(uuid, Action.REMOVE, amount, getDate()))
             //  Logger
             plugin.logger.info("added point. uuid:$uuid added: $amount")
-        }catch (e:SQLException){
+        } catch (e: SQLException) {
             e.printStackTrace()
             plugin.logger.info("Can not add point.")
             return false
@@ -218,7 +218,7 @@ object PointAPI {
      * @param uuid[String] uuid
      * @return point[Int] point (if throw exception,return Int -1)
      */
-    fun getPoint(uuid:String):Int{
+    fun getPoint(uuid: String): Int {
         var amount = 0
         //  Select
         val selectSQL = "SELECT point,date FROM server_point WHERE uuid='${uuid}' LIMIT 1;"
@@ -233,13 +233,13 @@ object PointAPI {
             }
             val statement = connection.createStatement()
             val result = statement.executeQuery(selectSQL)
-            amount = if(!result.next()){
+            amount = if (!result.next()) {
                 //  Create Player Data
                 createPlayer(uuid)
                 0
-            }else{
+            } else {
                 var p = 0
-                while (result.next()){
+                while (result.next()) {
                     p = result.getInt("point")
                 }
                 p
@@ -249,7 +249,7 @@ object PointAPI {
             //  Close
             statement.close()
             connection.close()
-        }catch (e:SQLException){
+        } catch (e: SQLException) {
             e.printStackTrace()
             plugin.logger.info("Can not get point data.")
             return -1
@@ -261,7 +261,7 @@ object PointAPI {
      * function of create table
      * @return success[Boolean]
      */
-    fun createTable():Boolean {
+    fun createTable(): Boolean {
         val sql = "create table server_point\n" +
                 "(\n" +
                 "\tid int auto_increment,\n" +
@@ -302,7 +302,7 @@ object PointAPI {
             connection.close()
             //  Logger
             plugin.logger.info("created table.")
-        }catch (e:SQLException){
+        } catch (e: SQLException) {
             e.printStackTrace()
             plugin.logger.info("Can not create table.")
             return false
@@ -310,20 +310,21 @@ object PointAPI {
         return true
     }
 
-    private enum class Action{
-        CREATE,DELETE,ADD,REMOVE
+    private enum class Action {
+        CREATE, DELETE, ADD, REMOVE
     }
-    private data class LogInfo(val uuid: String,val action:Action,val point:Int,val date:String)
+
+    private data class LogInfo(val uuid: String, val action: Action, val point: Int, val date: String)
     //////////////////////////////
     //  LOG
     /**
      * function of add logs.
      * @param info[LogInfo] information data class
      */
-    private fun addLog(info:LogInfo){
+    private fun addLog(info: LogInfo) {
         object : BukkitRunnable() {
             override fun run() {
-                val sql = when(info.action){
+                val sql = when (info.action) {
                     Action.CREATE -> {
                         "INSERT INTO server_point_log (uuid,action,point,date) VALUES ('${info.uuid}','CREATE','-1','${info.date}');"
                     }
@@ -349,7 +350,7 @@ object PointAPI {
                     statement.execute(sql)
                     statement.close()
                     connection.close()
-                }catch (e:SQLException){
+                } catch (e: SQLException) {
                     e.printStackTrace()
                     plugin.logger.info("Can not add log.")
                 }
@@ -359,7 +360,7 @@ object PointAPI {
 
     //  Unit
     //  get date
-    private fun getDate():String{
+    private fun getDate(): String {
         //  date
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
