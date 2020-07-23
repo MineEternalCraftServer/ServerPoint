@@ -21,7 +21,7 @@ object PointAPI {
      * @return success[Boolean] success
      */
     fun createPlayer(uuid: String):Boolean{
-        
+
         return true
     }
 
@@ -31,8 +31,26 @@ object PointAPI {
      * @return success[Boolean] success
      */
     fun deletePlayer(uuid: String):Boolean{
-
-
+        val sql = "DELETE FROM server_point WHERE uuid='${uuid}';"
+        try {
+            //  DB
+            val connection = dataBase.getConnection()
+            if (connection == null) {
+                dataBase.sendErrorMessage()
+                plugin.logger.info("Can not access DB. method:PointAPI/deletePlayer")
+                return false
+            }
+            val statement = connection.createStatement()
+            statement.execute(sql)
+            statement.close()
+            connection.close()
+            //  Logger
+            plugin.logger.info("deleted player. uuid:$uuid")
+        }catch (e:SQLException){
+            e.printStackTrace()
+            plugin.logger.info("Can not delete player.")
+            return false
+        }
         return true
     }
 
