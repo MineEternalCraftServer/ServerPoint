@@ -7,9 +7,7 @@ class ServerPoint : JavaPlugin() {
     companion object{
         lateinit var plugin:ServerPoint
         var prefix = "§e[§6Server§aPoint§e]§f"
-        var enabled = false
         lateinit var dataBase:DataBase
-
     }
 
     //  Plugin Information
