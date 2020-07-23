@@ -36,6 +36,16 @@ object PointAPI {
                 return false
             }
             val statement = connection.createStatement()
+
+            //  check exist
+            val selectSQL = "SELECT point FROM server_point WHERE uuid='${uuid}' LIMIT 1;"
+            val result = statement.executeQuery(selectSQL)
+            if(result.next()){
+                statement.close()
+                connection.close()
+                return true
+            }
+            //  Insert
             statement.execute(sql)
             statement.close()
             connection.close()
