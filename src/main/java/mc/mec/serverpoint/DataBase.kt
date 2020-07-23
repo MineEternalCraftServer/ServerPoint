@@ -74,7 +74,7 @@ class DataBase(private val prefix: String) {
         return true
     }
     private fun sendErrorMessage() {
-        plugin.logger.warning("接続エラーです。MariaDBがダウンしている、もしくはコネクションの設定を確認してください。")
+        plugin.logger.warning("接続エラーです。データベースがダウンしている、もしくはコネクションの設定を確認してください。")
         if (errorMode) return
         plugin.server.broadcastMessage("${prefix}§c§lデータベースの接続エラーです。運営にお知らせください。")
         errorMode = true
