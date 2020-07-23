@@ -3,4 +3,4 @@ database:
   user: "root"
   pass: "password"
   port: "3306"
-  db: "db"
+  db: "serverpoints"
