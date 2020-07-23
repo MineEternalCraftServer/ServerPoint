@@ -1,6 +1,5 @@
 package mc.mec.serverpoint
 
-import org.bukkit.Server
 import org.bukkit.plugin.java.JavaPlugin
 
 class ServerPoint : JavaPlugin() {
@@ -24,7 +23,7 @@ class ServerPoint : JavaPlugin() {
         plugin = this
         //  DB
         dataBase = DataBase("ServerPoint")
-
+        //  Command
         getCommand("spoint")?.executor = Command
     }
 

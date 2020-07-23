@@ -7,30 +7,34 @@ import org.bukkit.command.ConsoleCommandSender
 import org.bukkit.entity.Player
 
 object Command : CommandExecutor {
-    override fun onCommand(sender: CommandSender?, command: Command?, label: String?, args: Array<out String>?): Boolean {
-        val p = sender as Player
-        val cmd = args?.get(0)
-
+    override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if (sender is ConsoleCommandSender){
             sender.sendMessage("This command can only be executed by the player.")
             return false
         }
 
-        if (p.hasPermission("spoint.admin")) {
+        val p = sender as Player
 
-            if (cmd == "add") {
-                // command: /spoint add <player> <amount>
+        if (p.hasPermission(Permission.ADMIN)) {
 
+            if(args.isEmpty()){
+                //  help
+
+                return true
             }
 
-            if (cmd == "remove") {
-                // command: /spoint remove <player> <amount>
+            when(args[0]){
+                "add" -> {
+                    // command: /spoint add <player> <amount>
 
-            }
+                }
+                "remove" -> {
+                    // command: /spoint remove <player> <amount>
 
-            if (cmd == "help") {
-                // command: /spoint help
-
+                }
+                "help" -> {
+                    // command: /spoint help
+                }
             }
 
         }else {
