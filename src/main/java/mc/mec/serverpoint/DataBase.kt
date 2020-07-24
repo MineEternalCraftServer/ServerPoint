@@ -55,7 +55,7 @@ class DataBase(private val prefix: String) {
     fun getConnection(): Connection? {
         val connection: Connection
         connection = try {
-            DriverManager.getConnection("jdbc:mysql://$host:$port/$db", user, pass)
+            DriverManager.getConnection("jdbc:mysql://$host:$port/$db?autoReconnect=true&useSSL=false", user, pass)
         } catch (e: SQLException) {
             e.printStackTrace()
             return null

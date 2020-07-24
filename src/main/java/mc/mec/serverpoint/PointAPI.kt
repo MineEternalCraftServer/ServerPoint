@@ -270,10 +270,7 @@ object PointAPI {
                 "\tdate datetime not null,\n" +
                 "\tconstraint server_point_pk\n" +
                 "\t\tprimary key (id)\n" +
-                ");\n" +
-                "\n" +
-                "create index server_point_uuid_index\n" +
-                "\ton server_point (uuid);"
+                ");"
         val sql_log = "create table server_point_log\n" +
                 "(\n" +
                 "\tid int auto_increment,\n" +
@@ -283,10 +280,7 @@ object PointAPI {
                 "\tdate datetime not null,\n" +
                 "\tconstraint server_point_log_pk\n" +
                 "\t\tprimary key (id)\n" +
-                ");\n" +
-                "\n" +
-                "create index server_point_log_uuid_index\n" +
-                "\ton server_point_log (uuid);\n"
+                ");"
         try {
             //  DB
             val connection = dataBase.getConnection()

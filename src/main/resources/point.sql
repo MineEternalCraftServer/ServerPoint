@@ -7,6 +7,3 @@ create table server_point
 	constraint server_point_pk
 		primary key (id)
 );
-
-create index server_point_uuid_index
-	on server_point (uuid);

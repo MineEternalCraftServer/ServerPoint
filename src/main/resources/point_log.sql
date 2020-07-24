@@ -8,6 +8,3 @@ create table server_point_log
 	constraint server_point_log_pk
 		primary key (id)
 );
-
-create index server_point_log_uuid_index
-	on server_point_log (uuid);
