@@ -51,7 +51,7 @@ object PointAPI {
             connection.close()
 
             //  Log
-            addLog(LogInfo(uuid, Action.DELETE, -1, getDate()))
+            addLog(LogInfo(uuid, Action.CREATE, -1, getDate()))
             //  Logger
             plugin.logger.info("created player. uuid:$uuid")
         } catch (e: SQLException) {
@@ -104,7 +104,7 @@ object PointAPI {
         //  Select
         val selectSQL = "SELECT point,date FROM server_point WHERE uuid='${uuid}' LIMIT 1;"
         //  UPDATE
-        val updateSQL = "UPDATE server_point SET point='_POINT_',date='_DATE_';"
+        val updateSQL = "UPDATE server_point SET point=?,date=? WHERE uuid='${uuid}';"
 
         try {
             //  DB
@@ -130,16 +130,17 @@ object PointAPI {
             //  close resultSet
             result.close()
 
+            val pst = connection.prepareStatement(updateSQL)
             //  add point
             point += amount
             //  replace
-            updateSQL.replace("_POINT_", point.toString())
-            updateSQL.replace("_DATE_", getDate())
-            //  Execute
-            statement.executeUpdate(updateSQL)
+            pst.setInt(1,point)
+            pst.setString(2, getDate())
+            pst.executeUpdate()
 
             //  Close
             statement.close()
+            pst.close()
             connection.close()
 
             //  Log
@@ -164,7 +165,7 @@ object PointAPI {
         //  Select
         val selectSQL = "SELECT point,date FROM server_point WHERE uuid='${uuid}' LIMIT 1;"
         //  UPDATE
-        val updateSQL = "UPDATE server_point SET point='_POINT_',date='_DATE_';"
+        val updateSQL = "UPDATE server_point SET point=?,date=? WHERE uuid='${uuid}';"
 
         try {
             //  DB
@@ -190,15 +191,17 @@ object PointAPI {
             //  close resultSet
             result.close()
 
+            val pst = connection.prepareStatement(updateSQL)
             //  add point
             point -= amount
             //  replace
-            updateSQL.replace("_POINT_", point.toString())
-            updateSQL.replace("_DATE_", getDate())
-            //  Execute
-            statement.executeUpdate(updateSQL)
+            pst.setInt(1,point)
+            pst.setString(2, getDate())
+            pst.executeUpdate()
+
             //  Close
             statement.close()
+            pst.close()
             connection.close()
 
             //  Log
@@ -262,7 +265,7 @@ object PointAPI {
      * @return success[Boolean]
      */
     fun createTable(): Boolean {
-        val sql = "create table server_point\n" +
+        val sql = "create table if not exists server_point\n" +
                 "(\n" +
                 "\tid int auto_increment,\n" +
                 "\tuuid VARCHAR(36) not null,\n" +
@@ -271,7 +274,7 @@ object PointAPI {
                 "\tconstraint server_point_pk\n" +
                 "\t\tprimary key (id)\n" +
                 ");"
-        val sql_log = "create table server_point_log\n" +
+        val sql_log = "create table if not exists server_point_log\n" +
                 "(\n" +
                 "\tid int auto_increment,\n" +
                 "\tuuid VARCHAR(36) not null,\n" +

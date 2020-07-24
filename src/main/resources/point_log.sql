@@ -1,4 +1,4 @@
-create table server_point_log
+create table if not exists server_point_log
 (
 	id int auto_increment,
 	uuid VARCHAR(36) not null,
