@@ -132,7 +132,7 @@ object Command : CommandExecutor {
                     //  Execute
                     object : BukkitRunnable() {
                         override fun run() {
-                            p.sendMessage("§a${player.name}のポイント: ${PointAPI.getPoint(uuid)}")
+                            p.sendMessage("${prefix}§a${player.name}のポイント: ${PointAPI.getPoint(uuid)}")
                         }
                     }.runTask(plugin)
                 }

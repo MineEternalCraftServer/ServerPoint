@@ -45,6 +45,7 @@ object PointAPI {
                 connection.close()
                 return true
             }
+            result.close()
             //  Insert
             statement.execute(sql)
             statement.close()
@@ -116,17 +117,13 @@ object PointAPI {
             }
             val statement = connection.createStatement()
             val result = statement.executeQuery(selectSQL)
-            var point: Int = if (!result.next()) {
-                //  Create Player Data
+            var point = if(!result.next()){
                 createPlayer(uuid)
                 0
-            } else {
-                var p = 0
-                while (result.next()) {
-                    p = result.getInt("point")
-                }
-                p
+            }else {
+                result.getInt("point")
             }
+
             //  close resultSet
             result.close()
 
@@ -181,12 +178,8 @@ object PointAPI {
                 //  Create Player Data
                 createPlayer(uuid)
                 0
-            } else {
-                var p = 0
-                while (result.next()) {
-                    p = result.getInt("point")
-                }
-                p
+            } else{
+                result.getInt("point")
             }
             //  close resultSet
             result.close()
@@ -241,11 +234,7 @@ object PointAPI {
                 createPlayer(uuid)
                 0
             } else {
-                var p = 0
-                while (result.next()) {
-                    p = result.getInt("point")
-                }
-                p
+                result.getInt("point")
             }
             //  close resultSet
             result.close()
