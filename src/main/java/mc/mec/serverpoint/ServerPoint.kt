@@ -25,8 +25,6 @@ class ServerPoint : JavaPlugin(), Listener {
         plugin = this
         //  Config
         this.saveDefaultConfig()
-        //  DB
-        dataBase = DataBase("ServerPoint")
         //  Create Table
         PointAPI.createTable()
 
