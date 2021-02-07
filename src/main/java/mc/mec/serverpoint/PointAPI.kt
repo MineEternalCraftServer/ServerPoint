@@ -10,6 +10,11 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 /**
+ * Created by testusuke on 2020/07/23
+ * @author testusuke
+ */
+
+/**
  * ポイント管理のクラスです。
  */
 object PointAPI {
